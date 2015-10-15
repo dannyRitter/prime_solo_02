@@ -3,12 +3,39 @@
 // The first bug I found/changed was on line 21: I added [i] to calculateSTI(array[i]) so the for loop wouldn't remain stuck on arrayAtticus 
 // The second bug I found/changed was on line 68: I removed the - 1 after basePercent, which fixed the percentage of STI for each employee.
 // The third bug I found/changed was on line 43: I added Math.round(baseSalary * (1.0 + bonus)); and that cleaned up the output.
-var arrayAtticus = ["Atticus", "2405", "47000", 3];
-var arrayJem = ["Jem", "62347", "63500", 4];
-var arrayBoo = ["Boo", "11435", "54000", 3];
-var arrayScout = ["Scout", "6243", "74750", 5];
+var objectAtticus = {
+  name : "Atticus",
+  employeeNumber : "2405",
+  baseSalary : "47000",
+  reviewScore : 3
+};
+//["Atticus", "2405", "47000", 3]
 
-var array = [arrayAtticus, arrayJem, arrayBoo, arrayScout];
+var objectJem = {
+  name : "Jem",
+  employeeNumber : "62347",
+  baseSalary : "63500",
+  reviewScore : 4
+};
+//["Jem", "62347", "63500", 4];
+
+var objectBoo = {
+  name : "Boo",
+  employeeNumber : "11435",
+  baseSalary : "54000",
+  reviewScore : 3
+};
+//["Boo", "11435", "54000", 3];
+
+var objectScout = {
+  name : "Scout",
+  employeeNumber : "6243",
+  baseSalary : "74750",
+  reviewScore : 5
+};
+//["Scout", "6243", "74750", 5];
+
+var array = [objectAtticus, objectJem, objectBoo, objectScout];
 
 //Create variables used to write to the DOM
 var newEl, newText, position;
@@ -20,30 +47,35 @@ position = document.getElementById('content');
 for(var i = 0; i < array.length; i++){
 	array[i] = calculateSTI(array[i]);
  	newEl = document.createElement('li');
-	newText = document.createTextNode(array[i]);
+	newText = document.createTextNode(array[i].name + ", " + array[i].STI + ", " + array[i].adjustedCompensation + ", " + array[i].bonus);
 	newEl.appendChild(newText);
 	position.appendChild(newEl);
 }
 
-function calculateSTI(array){
-  var newArray = [];
+function calculateSTI(object){
+  var newObject = {
+    name : "",
+    STI : "",
+    adjustedCompensation : "",
+    bonus : ""
+  };
 
-  newArray[0] = array[0];
+  newObject.name = object.name;
 
-  var employeeNumber = array[1];
-  var baseSalary = array[2];
-  var reviewScore = array[3];
+  var employeeNumber = object.employeeNumber;
+  var baseSalary = object.baseSalary;
+  var reviewScore = object.reviewScore;
 
   var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) - getIncomeAdjustment(baseSalary);
   if(bonus > 0.13){
     bonus = 0.13;
   }
 
-  newArray[1] = bonus;
-  newArray[2] = Math.round(baseSalary * (1.0 + bonus));
-  newArray[3] = baseSalary * bonus;
-  console.log(newArray[0] + " " + newArray[1] + " " + newArray[2] + " " + newArray[3]);
-  return newArray;
+  newObject.STI = bonus;
+  newObject.adjustedCompensation = Math.round(baseSalary * (1.0 + bonus));
+  newObject.bonus = baseSalary * bonus;
+  console.log(newObject.name + " " + newObject.STI + " " + newObject.adjustedCompensation + " " + newObject.bonus);
+  return newObject;
 }
 
 function getBaseSTI(reviewScore){
